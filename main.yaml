@@ -1,0 +1,120 @@
+substitutions:
+  name: yavuz #My not be longer then 10 letters
+  ssid: !secret ssid
+  ssid_pass: !secret ssid_pass 
+  webserver_user: !secret webserver_user
+  webserver_pass: !secret webserver_pass
+  fallback_pass: !secret fallback_pass
+  #static_ip: 10.130.1.21
+  #gateway: 10.130.1.1
+  #subnet: 255.255.255.0
+  
+
+
+esphome:
+  name: ${name}
+  #bei ESP8266
+  #platform: ESP8266
+  #board: d1_mini
+  #bei ESP32 # entfernen
+  platform: ESP32
+  board: esp32dev
+ 
+
+wifi:
+  ssid:  ${ssid}
+  password: ${ssid_pass}
+  # Optional manual IP
+  #manual_ip:
+    #static_ip: ${static_ip}
+    #gateway: ${gateway}
+    #subnet: ${subnet}
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: ESPHome ${name}
+    password: ${fallback_pass}
+captive_portal:
+    
+
+# Enable logging
+logger:
+  level: DEBUG
+  #level: VERBOSE
+#Over the Air Update  
+ota:
+  - platform: esphome
+    password: !secret ota_password
+#API in HA
+api:
+
+web_server:
+  port: 80
+  auth:
+    username: ${webserver_user}
+    password: ${webserver_pass}
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: Europe/Zurich
+    servers:
+     - 0.pool.ntp.org
+     - 1.pool.ntp.org
+     - 2.pool.ntp.org
+
+
+
+# I2C Config
+i2c:
+  #ESP8266
+  #sda: 4
+  #scl: 5
+  #ESP32
+  sda: 21
+  scl: 22
+  scan: True
+  id: bus_a    
+
+
+
+packages:
+  # Include the remote receiver configuration
+  ir:  !include ir_remote_receiver.yaml
+  # Include the DHT sensor configuration
+  #dht: !include dht.yaml
+  # Include the BMP280 sensor configuration
+  #bmp280: !include bmp280.yaml
+  # Include the ADC sensor configuration
+  adc: !include adc.yaml
+  # Include the TM1637 display configuration
+  #tm1637: !include tm1637.yaml
+  # Include the WiFi signal sensor configuration
+  wifi_signal: !include wifi_signal.yaml
+  # Include the buzzers configuration
+  rtttl: !include buzzer.yaml
+  # Include the button configuration
+  button: !include button.yaml
+  # Include the LED configuration
+  led: !include led.yaml
+  # Include the select configuration
+  select: !include select.yaml
+  # Include the startup configuration
+  #startup: !include startup.yaml
+  # Include the LCD Display configuration
+  #lcd: !include lcd_pcf8574.yaml
+
+  # Include the LCD Display configuration
+  # temp_led: !include temp_led.yaml
+  # Include the LCD Display configuration
+  temp_humdty_led: !include temp_humdty_led.yaml
+  # Include the LCD Display configuration
+  #temp_buzzer: !include temp_buzzer.yaml
+    
+
+
+
+
+ 
+
+  

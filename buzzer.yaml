@@ -1,0 +1,12 @@
+
+binary_sensor:
+#Buzzer
+output:
+  - platform: ledc
+    pin: GPIO26
+    id: rtttl_out
+
+rtttl:
+  output: rtttl_out
+  on_finished_playback:
+    - logger.log: 'Song ended!'

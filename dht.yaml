@@ -1,0 +1,15 @@
+sensor:
+  - platform: dht      
+    temperature:
+        id: "temperatur"
+        name: "Sensor dht Temperature"      
+        icon: "mdi:thermometer-lines"
+        device_class: "temperature"
+        state_class: "measurement"
+        filters:
+          - offset: -2.0      
+    humidity:
+        name: "Sensor dht Humidity"
+        icon: "mdi:water-percent"
+    update_interval: 60s
+    pin: GPIO16

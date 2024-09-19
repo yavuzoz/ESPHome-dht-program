@@ -1,0 +1,46 @@
+sensor:
+  - platform: dht      
+    temperature:
+        id: "temperatur"
+        name: "Sensor dht Temperature"      
+        icon: "mdi:thermometer-lines"
+        device_class: "temperature"
+        state_class: "measurement"
+        filters:
+          - offset: -2.0
+        on_value_range:    
+          - above: 30
+            then:
+              - switch.turn_on: LED1
+              - switch.turn_on: LED2
+              - switch.turn_on: LED3
+              - switch.turn_on: LED4            
+              - rtttl.play: #'scale_up:d=32,o=5,b=100:c,c#,d#,e,f#,g#,a#,b'
+                    'star_wars:d=16,o=5,b=100:4e,4e,4e,8c,p,g,4e,8c,p,g,4e,4p,4b,4b,4b,8c6,p,g,4d#,8c,p,g,4e,8p'
+                    #'mario:d=4,o=5,b=100:16e6,16e6,32p,8e6,16c6,8e6,8g6,8p,8g,8p,8c6,16p,8g,16p,8e,16p,8a,8b,16a#,8a,16g.,16e6,16g6,8a6,16f6,8g6,8e6,16c6,16d6,8b,16p,8c6,16p,8g,16p,8e,16p,8a,8b,16a#,8a,16g.,16e6,16g6,8a6,16f6,8g6,8e6,16c6,16d6,8b,8p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16g#,16a,16c6,16p,16a,16c6,16d6,8p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16c7,16p,16c7,16c7,p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16g#,16a,16c6,16p,16a,16c6,16d6,8p,16d#6,8p,16d6,8p,16c6'   
+    humidity:
+        name: "Sensor dht Humidity"
+        icon: "mdi:water-percent"
+        filters:
+          - offset: -2.0
+        on_value_range:    
+          - above: 35
+            then:           
+              - rtttl.play: #'scale_up:d=32,o=5,b=100:c,c#,d#,e,f#,g#,a#,b'
+           #'star_wars:d=16,o=5,b=100:4e,4e,4e,8c,p,g,4e,8c,p,g,4e,4p,4b,4b,4b,8c6,p,g,4d#,8c,p,g,4e,8p'
+                    'mario:d=4,o=5,b=100:16e6,16e6,32p,8e6,16c6,8e6,8g6,8p,8g,8p,8c6,16p,8g,16p,8e,16p,8a,8b,16a#,8a,16g.,16e6,16g6,8a6,16f6,8g6,8e6,16c6,16d6,8b,16p,8c6,16p,8g,16p,8e,16p,8a,8b,16a#,8a,16g.,16e6,16g6,8a6,16f6,8g6,8e6,16c6,16d6,8b,8p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16g#,16a,16c6,16p,16a,16c6,16d6,8p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16c7,16p,16c7,16c7,p,16g6,16f#6,16f6,16d#6,16p,16e6,16p,16g#,16a,16c6,16p,16a,16c6,16d6,8p,16d#6,8p,16d6,8p,16c6'
+    update_interval: 5s
+    pin: GPIO16
+
+display:
+    platform: tm1637
+    id: tm1637_display
+    clk_pin: GPIO18
+    dio_pin: GPIO17
+    inverted: false
+    length: 4
+    lambda: |-
+      it.printf(0, "%.1f", id(temperatur).state); 
+      
+     
+      
